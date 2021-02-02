@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--
+        如果想扫描多个包，可以使用逗号分隔开
+        或者写包的上层目录，这样其子包都能被扫描
+    -->
+    <context:component-scan base-package="com.suftz"/>
+    <context:property-placeholder location="classpath:day01/jdbc.properties" />
+    <!--配置数据库连接池信息，获取数据源对象-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${prop.driverClass}"></property>
+        <property name="url" value="${prop.url}"></property>
+        <property name="username" value="${prop.username}"></property>
+        <property name="password" value="${prop.password}"></property>
+        <property name="minEvictableIdleTimeMillis" value="${prop.minEvictableIdleTimeMillis}"></property>
+        <property name="validationQuery" value="${prop.validationQuery}"></property>
+    </bean>
+    <!--将jdbcTemplate放入bean容器中管理，并将druid数据库连接池对象注入到spring的JdbcTemplate对象中-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--配置通知-->
+    <tx:advice id="txadvice">
+        <!--配置事务参数-->
+        <tx:attributes>
+            <tx:method name="transferAccount" propagation="REQUIRED" isolation="REPEATABLE_READ" read-only="false" timeout="2"  />
+            <!-- <tx:method name="add*" />-->
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置切入点和切面-->
+    <aop:config>
+        <!--配置切入点-->
+        <aop:pointcut id="pointcut" expression="execution(* com.suftz.service.AccountService.*(..))" />
+        <!--配置切面-->
+        <aop:advisor advice-ref="txadvice" pointcut-ref="pointcut" />
+    </aop:config>
+
+</beans>

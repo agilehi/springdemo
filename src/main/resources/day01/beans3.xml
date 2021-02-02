@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--这是使用内部bean的方式来配置-->
+<!--    <bean id="employee" class="com.suftz.bean.Employee" >-->
+<!--        <property name="empName" value="雷军"></property>-->
+<!--        <property name="dept">-->
+<!--            <bean id="dept" class="com.suftz.bean.Department">-->
+<!--                <property name="deptName" value="研发部"></property>-->
+<!--            </bean>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+    <!--这是使用外部bean的方式复制-->
+<!--    <bean id="employee" class="com.suftz.bean.Employee" >-->
+<!--        <property name="empName" value="雷军"></property>-->
+<!--        <property name="dept" ref="dept">-->
+<!--        </property>-->
+<!--    </bean>-->
+<!--    <bean id="dept" class="com.suftz.bean.Department">-->
+<!--        <property name="deptName" value="研发部"></property>-->
+<!--    </bean>-->
+
+<!--    可以级联赋值，但是此时dept属性，一定要有getDept方法-->
+    <bean id="employee" class="com.suftz.bean.Employee" >
+        <property name="empName" value="雷军"></property>
+        <property name="dept" ref="dept">
+        </property>
+        <property name="dept.deptName" value="研发二部"></property>
+    </bean>
+    <bean id="dept" class="com.suftz.bean.Department">
+        <property name="deptName" value="研发一部"></property>
+    </bean>
+
+</beans>

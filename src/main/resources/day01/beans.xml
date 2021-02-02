@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="user" class="com.suftz.bean.User" >
+        <!--
+            name:类里面属性名称
+            value:向属性注入的值
+            这里注入的方式是调用属性的setXXX方法，所以没有此方法的属性无法注入,报异常
+        -->
+        <property name="uname" value="Smith"></property>
+        <property name="age" value="33"></property>
+        <property name="email">
+            <null></null>
+        </property>
+        <property name="address">
+            <!---值为： <华中> -->
+            <value><![CDATA[<华中>]]></value>
+        </property>
+    </bean>
+
+    <bean id="user2" class="com.suftz.bean.User" >
+        <!--
+            name:有参构造器的形参列表中参数的名字
+            value:形参对应的实参
+            这里注入的方式是调用有参构造器，所以这里的参数列表和属性数量和名称要在有参构造器中能对应上
+        -->
+        <constructor-arg name="uname" value="Smith"></constructor-arg>
+        <constructor-arg name="age" value="33"></constructor-arg>
+        <constructor-arg name="email" value="sys@suftz.com"></constructor-arg>
+    </bean>
+    <bean id="user3" class="com.suftz.bean.User" p:uname="Jack" p:age="12" p:email="sky@suftz.com"></bean>
+</beans>

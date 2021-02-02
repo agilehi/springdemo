@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+    <bean id="stu" class="com.suftz.bean.Student">
+        <property name="courses" ref="courses" />
+        <property name="list" ref="list" />
+        <property name="set" ref="set" />
+        <property name="map" ref="map" />
+        <property name="courseLisst" ref="courseList" />
+    </bean>
+
+    <bean id="course1" class="com.suftz.bean.Course">
+        <property name="courseName" value="大学数学"></property>
+    </bean>
+    <bean id="course2" class="com.suftz.bean.Course">
+        <property name="courseName" value="大学英语"></property>
+    </bean>
+    <bean id="course3" class="com.suftz.bean.Course">
+        <property name="courseName" value="大学体育"></property>
+    </bean>
+    <util:list id="courses">
+        <value>语文</value>
+        <value>数学</value>
+        <value>英语</value>
+    </util:list>
+    <util:map id="map">
+        <entry key="key1" value="value1"></entry>
+        <entry key="key2" value="value2"></entry>
+        <entry key="key3" value="value3"></entry>
+    </util:map>
+    <util:set id="set">
+        <value>Java</value>
+        <value>php</value>
+        <value>C++</value>
+    </util:set>
+    <util:list id="list">
+        <value>张三</value>
+        <value>李四</value>
+        <value>王五</value>
+    </util:list>
+    <util:list id="courseList">
+        <ref bean="course1"/>
+        <ref bean="course2"/>
+        <ref bean="course3"/>
+    </util:list>
+</beans>
